@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Global Flag Challenge</title>
+    <style>
+        :root {
+            --neon-blue: #00f2fe;
+            --glass: rgba(10, 15, 30, 0.95);
+            --gold: #fbbf24;
+        }
+
+        body {
+            margin: 0; padding: 20px; font-family: 'Inter', sans-serif; color: white;
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+            background: #020617;
+            background-image: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #020617 100%);
+        }
+
+        .main-title {
+            color: #00f2fe; font-size: 3.5rem; font-weight: 900; 
+            text-transform: uppercase; text-align: center; margin-top: 40px; 
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.6); letter-spacing: 2px;
+        }
+
+        .quiz-card {
+            background: var(--glass); backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 35px;
+            padding: 40px; width: 100%; max-width: 650px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            margin-top: 20px;
+        }
+
+        .flag-img {
+            width: 100%; max-width: 320px; height: auto;
+            border-radius: 12px; margin: 20px auto; display: block;
+            border: 4px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        button {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: white; padding: 18px; border-radius: 15px; cursor: pointer;
+            font-size: 1rem; transition: 0.2s;
+        }
+
+        button:hover { background: var(--neon-blue); color: #020617; font-weight: bold; }
+
+        .report {
+            max-width: 800px; margin-top: 60px; line-height: 1.8; color: #94a3b8;
+            background: rgba(0,0,0,0.5); padding: 40px; border-radius: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<h1 class="main-title">The Country Flag Quiz</h1>
+
+<div class="quiz-card" id="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div style="color: var(--neon-blue); font-weight: 900;">SCORE: <span id="score">0</span></div>
+        <div style="font-size: 0.8rem; color: #64748b;">SHUFFLED POSITION: <span id="qIdx">1</span></div>
+    </div>
+
+    <div id="visual-area"></div>
+    <div id="stars" style="color: var(--gold); margin-bottom: 10px;">⭐⭐⭐⭐⭐</div>
+    <div class="question-text" style="font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; text-align: center;">Identify the Nation</div>
+    <div class="btn-grid" id="options"></div>
+</div>
+
+<div class="report">
+    <p>
+        
+        The implementation of a jumbled order mechanism is essential for preventing cognitive bias and ensuring that the user is truly mastering the visual identification of each nation. By randomizing the sequence of the nearly 200 flags included in this dataset, the quiz mimics the unpredictable nature of global travel, where one might transition from the diverse landscapes of Asia to the historical territories of Europe in a single journey. This unpredictability is key to reinforcing memory, as it forces the brain to actively recall specific details about each flag rather than relying on the order of a static list.
+    </p>
+    <p>
+        For travelers planning international expeditions from India, this jumbled approach provides a more rigorous training environment for identifying official symbols and government banners. Whether you are cross-referencing documents or navigating foreign arrival halls, the ability to recognize a flag regardless of context is an invaluable skill. This helps in the accurate management of travel logistics and the estimation of local costs in Indian Rupee, as it grounds the traveler in a firm understanding of the political and cultural geography of their destination. This shuffle logic ensures that every attempt at the quiz is a fresh, challenging experience.
+    </p>
+</div>
+
+<script>
+    const countries = [
+        {c: "AF", n: "Afghanistan"}, {c: "AL", n: "Albania"}, {c: "DZ", n: "Algeria"}, {c: "AD", n: "Andorra"}, {c: "AO", n: "Angola"}, {c: "AG", n: "Antigua and Barbuda"}, {c: "AR", n: "Argentina"}, {c: "AM", n: "Armenia"}, {c: "AU", n: "Australia"}, {c: "AT", n: "Austria"}, {c: "AZ", n: "Azerbaijan"}, {c: "BS", n: "Bahamas"}, {c: "BH", n: "Bahrain"}, {c: "BD", n: "Bangladesh"}, {c: "BB", n: "Barbados"}, {c: "BY", n: "Belarus"}, {c: "BE", n: "Belgium"}, {c: "BZ", n: "Belize"}, {c: "BJ", n: "Benin"}, {c: "BT", n: "Bhutan"}, {c: "BO", n: "Bolivia"}, {c: "BA", n: "Bosnia and Herzegovina"}, {c: "BW", n: "Botswana"}, {c: "BR", n: "Brazil"}, {c: "BN", n: "Brunei"}, {c: "BG", n: "Bulgaria"}, {c: "BF", n: "Burkina Faso"}, {c: "BI", n: "Burundi"}, {c: "KH", n: "Cambodia"}, {c: "CM", n: "Cameroon"}, {c: "CA", n: "Canada"}, {c: "CV", n: "Cape Verde"}, {c: "CF", n: "Central African Republic"}, {c: "TD", n: "Chad"}, {c: "CL", n: "Chile"}, {c: "CN", n: "China"}, {c: "CO", n: "Colombia"}, {c: "KM", n: "Comoros"}, {c: "CG", n: "Congo"}, {c: "CR", n: "Costa Rica"}, {c: "HR", n: "Croatia"}, {c: "CU", n: "Cuba"}, {c: "CY", n: "Cyprus"}, {c: "CZ", n: "Czech Republic"}, {c: "DK", n: "Denmark"}, {c: "DJ", n: "Djibouti"}, {c: "DM", n: "Dominica"}, {c: "DO", n: "Dominican Republic"}, {c: "EC", n: "Ecuador"}, {c: "EG", n: "Egypt"}, {c: "SV", n: "El Salvador"}, {c: "GQ", n: "Equatorial Guinea"}, {c: "ER", n: "Eritrea"}, {c: "EE", n: "Estonia"}, {c: "SZ", n: "Eswatini"}, {c: "ET", n: "Ethiopia"}, {c: "FJ", n: "Fiji"}, {c: "FI", n: "Finland"}, {c: "FR", n: "France"}, {c: "GA", n: "Gabon"}, {c: "GM", n: "Gambia"}, {c: "GE", n: "Georgia"}, {c: "DE", n: "Germany"}, {c: "GH", n: "Ghana"}, {c: "GR", n: "Greece"}, {c: "GD", n: "Grenada"}, {c: "GT", n: "Guatemala"}, {c: "GN", n: "Guinea"}, {c: "GW", n: "Guinea-Bissau"}, {c: "GY", n: "Guyana"}, {c: "HT", n: "Haiti"}, {c: "HN", n: "Honduras"}, {c: "HU", n: "Hungary"}, {c: "IS", n: "Iceland"}, {c: "IN", n: "India"}, {c: "ID", n: "Indonesia"}, {c: "IR", n: "Iran"}, {c: "IQ", n: "Iraq"}, {c: "IE", n: "Ireland"}, {c: "IL", n: "Israel"}, {c: "IT", n: "Italy"}, {c: "JM", n: "Jamaica"}, {c: "JP", n: "Japan"}, {c: "JO", n: "Jordan"}, {c: "KZ", n: "Kazakhstan"}, {c: "KE", n: "Kenya"}, {c: "KI", n: "Kiribati"}, {c: "KP", n: "North Korea"}, {c: "KR", n: "South Korea"}, {c: "KW", n: "Kuwait"}, {c: "KG", n: "Kyrgyzstan"}, {c: "LA", n: "Laos"}, {c: "LV", n: "Latvia"}, {c: "LB", n: "Lebanon"}, {c: "LS", n: "Lesotho"}, {c: "LR", n: "Liberia"}, {c: "LY", n: "Libya"}, {c: "LI", n: "Liechtenstein"}, {c: "LT", n: "Lithuania"}, {c: "LU", n: "Luxembourg"}, {c: "MG", n: "Madagascar"}, {c: "MW", n: "Malawi"}, {c: "MY", n: "Malaysia"}, {c: "MV", n: "Maldives"}, {c: "ML", n: "Mali"}, {c: "MT", n: "Malta"}, {c: "MH", n: "Marshall Islands"}, {c: "MR", n: "Mauritania"}, {c: "MU", n: "Mauritius"}, {c: "MX", n: "Mexico"}, {c: "FM", n: "Micronesia"}, {c: "MD", n: "Moldova"}, {c: "MC", n: "Monaco"}, {c: "MN", n: "Mongolia"}, {c: "ME", n: "Montenegro"}, {c: "MA", n: "Morocco"}, {c: "MZ", n: "Mozambique"}, {c: "MM", n: "Myanmar"}, {c: "NA", n: "Namibia"}, {c: "NR", n: "Nauru"}, {c: "NP", n: "Nepal"}, {c: "NL", n: "Netherlands"}, {c: "NZ", n: "New Zealand"}, {c: "NI", n: "Nicaragua"}, {c: "NE", n: "Niger"}, {c: "NG", n: "Nigeria"}, {c: "MK", n: "North Macedonia"}, {c: "NO", n: "Norway"}, {c: "OM", n: "Oman"}, {c: "PK", n: "Pakistan"}, {c: "PW", n: "Palau"}, {c: "PA", n: "Panama"}, {c: "PG", n: "Papua New Guinea"}, {c: "PY", n: "Paraguay"}, {c: "PE", n: "Peru"}, {c: "PH", n: "Philippines"}, {c: "PL", n: "Poland"}, {c: "PT", n: "Portugal"}, {c: "QA", n: "Qatar"}, {c: "RO", n: "Romania"}, {c: "RU", n: "Russia"}, {c: "RW", n: "Rwanda"}, {c: "KN", n: "Saint Kitts and Nevis"}, {c: "LC", n: "Saint Lucia"}, {c: "VC", n: "Saint Vincent"}, {c: "WS", n: "Samoa"}, {c: "SM", n: "San Marino"}, {c: "ST", n: "Sao Tome and Principe"}, {c: "SA", n: "Saudi Arabia"}, {c: "SN", n: "Senegal"}, {c: "RS", n: "Serbia"}, {c: "SC", n: "Seychelles"}, {c: "SL", n: "Sierra Leone"}, {c: "SG", n: "Singapore"}, {c: "SK", n: "Slovakia"}, {c: "SI", n: "Slovenia"}, {c: "SB", n: "Solomon Islands"}, {c: "SO", n: "Somalia"}, {c: "ZA", n: "South Africa"}, {c: "SS", n: "South Sudan"}, {c: "ES", n: "Spain"}, {c: "LK", n: "Sri Lanka"}, {c: "SD", n: "Sudan"}, {c: "SR", n: "Suriname"}, {c: "SE", n: "Sweden"}, {c: "CH", n: "Switzerland"}, {c: "SY", n: "Syria"}, {c: "TW", n: "Taiwan"}, {c: "TJ", n: "Tajikistan"}, {c: "TZ", n: "Tanzania"}, {c: "TH", n: "Thailand"}, {c: "TL", n: "Timor-Leste"}, {c: "TG", n: "Togo"}, {c: "TO", n: "Tonga"}, {c: "TT", n: "Trinidad and Tobago"}, {c: "TN", n: "Tunisia"}, {c: "TR", n: "Turkey"}, {c: "TM", n: "Turkmenistan"}, {c: "TV", n: "Tuvalu"}, {c: "UG", n: "Uganda"}, {c: "UA", n: "Ukraine"}, {c: "AE", n: "United Arab Emirates"}, {c: "GB", n: "United Kingdom"}, {c: "US", n: "United States"}, {c: "UY", n: "Uruguay"}, {c: "UZ", n: "Uzbekistan"}, {c: "VU", n: "Vanuatu"}, {c: "VA", n: "Vatican City"}, {c: "VE", n: "Venezuela"}, {c: "VN", n: "Vietnam"}, {c: "YE", n: "Yemen"}, {c: "ZM", n: "Zambia"}, {c: "ZW", n: "Zimbabwe"}
+    ];
+
+    // Shuffle function using Fisher-Yates algorithm for true randomness
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    let quizPool = shuffleArray([...countries]);
+    let cur = 0, score = 0;
+
+    function render() {
+        if (cur >= quizPool.length) {
+            document.getElementById('card').innerHTML = `<h2 style="text-align:center">Challenge Complete!</h2><p style="text-align:center">Final Score: ${score}/${quizPool.length}</p><button onclick="location.reload()" style="width:100%">Re-Jumble and Play Again</button>`;
+            return;
+        }
+
+        const d = quizPool[cur];
+        document.getElementById('score').innerText = score;
+        document.getElementById('qIdx').innerText = cur + 1;
+        document.getElementById('visual-area').innerHTML = `<img src="https://flagcdn.com/w640/${d.c.toLowerCase()}.png" class="flag-img">`;
+
+        // Generate options: 1 correct + 3 jumbled wrong ones
+        let options = [d.n];
+        while (options.length < 4) {
+            let randomCountry = countries[Math.floor(Math.random() * countries.length)].n;
+            if (!options.includes(randomCountry)) options.push(randomCountry);
+        }
+        
+        // Jumble the answer buttons too
+        shuffleArray(options);
+
+        const oG = document.getElementById('options');
+        oG.innerHTML = "";
+        options.forEach(opt => {
+            const b = document.createElement("button");
+            b.innerText = opt;
+            b.onclick = () => {
+                if (opt === d.n) score++;
+                cur++;
+                render();
+            };
+            oG.appendChild(b);
+        });
+    }
+
+    render();
+</script>
+</body>
+</html>
